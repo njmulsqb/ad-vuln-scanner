@@ -37,7 +37,7 @@ else
     currentUserSids.Add($"{ident.User}"); // make sure we get our current SID
 
     // enumerate information about every CA object
-    var cas = ldap.GetEnterpriseCAs("_certificateAuthority");
+    var cas = ldap.GetEnterpriseCAs(_certificateAuthority);
 
 
     // enumerate information about all available templates
