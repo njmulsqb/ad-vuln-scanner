@@ -67,19 +67,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\frankcastle\\.nuget\\packages\\": {}
+    "C:\\Users\\najam\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\frankcastle\\Documents\\ad-scanner\\ad-scanner.csproj",
+      "projectUniqueName": "C:\\Users\\najam\\Downloads\\Github\\ad-vuln-scanner\\ad-scanner.csproj",
       "projectName": "ad-scanner",
-      "projectPath": "C:\\Users\\frankcastle\\Documents\\ad-scanner\\ad-scanner.csproj",
-      "packagesPath": "C:\\Users\\frankcastle\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\frankcastle\\Documents\\ad-scanner\\obj\\",
+      "projectPath": "C:\\Users\\najam\\Downloads\\Github\\ad-vuln-scanner\\ad-scanner.csproj",
+      "packagesPath": "C:\\Users\\najam\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\najam\\Downloads\\Github\\ad-vuln-scanner\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\frankcastle\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\najam\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [

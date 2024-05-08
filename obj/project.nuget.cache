@@ -1,10 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "T8/GkZQnRyV9/Ybtv9PmtQHaGE2iSj4d3Ykl6NcV9iVTtz4CR3CshdWgoHmNgAFN7ZYRqgCnOHNnZHh2INdOTg==",
+  "dgSpecHash": "UZABxfpLft3dWBARD7pgMoNr/yNqhWqH5AXGq12Dq7zpmGhLX8EaMZVmRKRdY5R8Zd4+aiLmYEm4EgfnlSxFmw==",
   "success": true,
-  "projectFilePath": "C:\\Users\\frankcastle\\Documents\\ad-scanner\\ad-scanner.csproj",
+  "projectFilePath": "C:\\Users\\najam\\Downloads\\Github\\ad-vuln-scanner\\ad-scanner.csproj",
   "expectedPackageFiles": [
-    "C:\\Users\\frankcastle\\.nuget\\packages\\system.directoryservices\\8.0.0\\system.directoryservices.8.0.0.nupkg.sha512"
+    "C:\\Users\\najam\\.nuget\\packages\\system.directoryservices\\8.0.0\\system.directoryservices.8.0.0.nupkg.sha512"
   ],
   "logs": []
 }
