@@ -1,9 +1,6 @@
-﻿// See https://aka.ms/new-console-template for more information
-using System;
+﻿using System;
 using System.DirectoryServices.ActiveDirectory;
 
-
-Console.WriteLine("Hello, World!");
 
 bool isDomainJoined = IsComputerJoinedToDomain();
 

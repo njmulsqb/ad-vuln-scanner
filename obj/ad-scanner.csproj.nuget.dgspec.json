@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\najam\\Downloads\\Github\\ad-vuln-scanner\\ad-scanner.csproj": {}
+    "C:\\Users\\fcastle\\Documents\\ad-vuln-scanner\\ad-scanner.csproj": {}
   },
   "projects": {
-    "C:\\Users\\najam\\Downloads\\Github\\ad-vuln-scanner\\ad-scanner.csproj": {
+    "C:\\Users\\fcastle\\Documents\\ad-vuln-scanner\\ad-scanner.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\najam\\Downloads\\Github\\ad-vuln-scanner\\ad-scanner.csproj",
+        "projectUniqueName": "C:\\Users\\fcastle\\Documents\\ad-vuln-scanner\\ad-scanner.csproj",
         "projectName": "ad-scanner",
-        "projectPath": "C:\\Users\\najam\\Downloads\\Github\\ad-vuln-scanner\\ad-scanner.csproj",
-        "packagesPath": "C:\\Users\\najam\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\najam\\Downloads\\Github\\ad-vuln-scanner\\obj\\",
+        "projectPath": "C:\\Users\\fcastle\\Documents\\ad-vuln-scanner\\ad-scanner.csproj",
+        "packagesPath": "C:\\Users\\fcastle\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\fcastle\\Documents\\ad-vuln-scanner\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\najam\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\fcastle\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
