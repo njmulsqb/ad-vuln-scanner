@@ -133,7 +133,58 @@ namespace ad_scanner.Lib
             return templates;
         }
 
- 
+        public IEnumerable<EnterpriseCertificateAuthority> GetEnterpriseCAs(string? caName = null)
+        {
+            var cas = new List<EnterpriseCertificateAuthority>();
+
+            // Container location per MS-WCCE 2.2.2.11.2 Enrollment Services Container
+            // - https://docs.microsoft.com/en-us/openspecs/windows_protocols/ms-wcce/3ec073ec-9b91-4bee-964e-56f22a93a28c
+            var root = new DirectoryEntry($"LDAP://{LdapServer}CN=Enrollment Services,CN=Public Key Services,CN=Services,{ConfigurationPath}");
+            var ds = new DirectorySearcher(root);
+
+            if (caName == null) ds.Filter = "(objectCategory=pKIEnrollmentService)";
+            else
+            {
+                var parts = caName.Split('\\');
+                var caSimpleName = parts[parts.Length - 1];
+                ds.Filter = $"(&(objectCategory=pKIEnrollmentService)(name={caSimpleName}))";
+            }
+            var results = ds.FindAll();
+
+            foreach (SearchResult sr in results)
+            {
+                var name = ParseName(sr);
+                var domainName = ParseDomainName(sr);
+                var guid = ParseGuid(sr);
+                var dnsHostname = ParseDnsHostname(sr);
+                var flags = ParsePkiCertificateAuthorityFlags(sr);
+                var certs = ParseCaCertificate(sr);
+                var sd = ParseSecurityDescriptor(sr);
+
+                var templates = new List<string>();
+                foreach (var template in sr.Properties["certificatetemplates"])
+                {
+                    templates.Add($"{template}");
+                }
+
+                var ca = new EnterpriseCertificateAuthority(
+                    sr.Path,
+                    name,
+                    domainName,
+                    guid,
+                    dnsHostname,
+                    flags,
+                    certs,
+                    sd,
+                    templates
+                );
+
+                cas.Add(ca);
+            }
+
+            return cas;
+        }
+
 
 
         private static string? ParseDnsHostname(SearchResult sr)
@@ -433,6 +484,13 @@ namespace ad_scanner.Lib
             {
                 return "ERROR";
             }
+        }
+        private static PkiCertificateAuthorityFlags? ParsePkiCertificateAuthorityFlags(SearchResult sr)
+        {
+            if (!sr.Properties.Contains("flags"))
+                return null;
+
+            return (PkiCertificateAuthorityFlags)Enum.Parse(typeof(PkiCertificateAuthorityFlags), sr.Properties["flags"][0].ToString());
         }
 
     }
