@@ -1,8 +1,12 @@
-﻿using System;
-using System.DirectoryServices.ActiveDirectory;
+﻿using System.DirectoryServices.ActiveDirectory;
 
 
 bool isDomainJoined = IsComputerJoinedToDomain();
+
+if (args.Length > 0)
+{
+    Console.WriteLine(args[0]);
+}
 
 if (isDomainJoined)
 {
@@ -14,15 +18,17 @@ else
 }
 
 
+
+
 static bool IsComputerJoinedToDomain()
+{
+    try
     {
-        try
-        {
-            Domain.GetComputerDomain(); // This method will throw an exception if not joined to a domain
-            return true;
-        }
-        catch (ActiveDirectoryObjectNotFoundException)
-        {
-            return false;
-        }
+        Domain.GetComputerDomain(); // This method will throw an exception if not joined to a domain
+        return true;
     }
+    catch (ActiveDirectoryObjectNotFoundException)
+    {
+        return false;
+    }
+}

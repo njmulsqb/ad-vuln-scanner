@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("ad-scanner")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+811e543e933c488d0ccf990ce836213e2f77710b")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+ab65a17e72b059426848806f7194babdc101fcf3")]
 [assembly: System.Reflection.AssemblyProductAttribute("ad-scanner")]
 [assembly: System.Reflection.AssemblyTitleAttribute("ad-scanner")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

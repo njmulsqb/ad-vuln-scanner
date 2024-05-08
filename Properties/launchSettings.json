@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "ad-scanner": {
+      "commandName": "Project",
+      "commandLineArgs": "/find vulnerable"
+    }
+  }
+}
