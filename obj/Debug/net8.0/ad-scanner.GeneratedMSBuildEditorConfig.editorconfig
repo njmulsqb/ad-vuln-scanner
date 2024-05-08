@@ -8,6 +8,6 @@ build_property.PlatformNeutralAssembly =
 build_property.EnforceExtendedAnalyzerRules = 
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = ad_scanner
-build_property.ProjectDir = C:\Users\frankcastle\Documents\ad-scanner\
+build_property.ProjectDir = C:\Users\fcastle\Documents\ad-vuln-scanner\
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 
