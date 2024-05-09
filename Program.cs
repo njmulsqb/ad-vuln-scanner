@@ -14,10 +14,10 @@ string _ldapServer = null;
 
 bool isDomainJoined = IsComputerJoinedToDomain();
 
-if (args.Length > 0)
-{
-    Console.WriteLine(args[0]);
-}
+//if (args.Length > 0)
+//{
+//    Console.WriteLine(args[0]);
+//}
 
 if (isDomainJoined)
 {
@@ -54,7 +54,7 @@ else
     }
 
     ShowVulnerableTemplates(templates, cas);
-    ShowVulnerableTemplates(templates, cas, currentUserSids);
+    //ShowVulnerableTemplates(templates, cas, currentUserSids);
 
 }
 
@@ -81,9 +81,9 @@ else
         Console.WriteLine($"    {string.Join("\n    ", unusedTemplates)}\n");
     }
 
-    Console.WriteLine(!vulnerableTemplates.Any()
-        ? "\n[+] No Vulnerable Certificates Templates found!\n"
-        : "\n[!] Vulnerable Certificates Templates :\n");
+    //Console.WriteLine(!vulnerableTemplates.Any()
+    //    ? "\n[+] No Vulnerable Certificates Templates found!\n"
+    //    : "\n[!] Vulnerable Certificates Templates :\n");
 
     foreach (var template in templates)
     {
@@ -112,44 +112,54 @@ else
 }
  void PrintCertTemplate(EnterpriseCertificateAuthority ca, CertificateTemplate template)
 {
-    Console.WriteLine($"    CA Name                               : {ca.FullName}");
-    Console.WriteLine($"    Template Name                         : {template.Name}");
-    Console.WriteLine($"    Schema Version                        : {template.SchemaVersion}");
-    Console.WriteLine($"    Validity Period                       : {template.ValidityPeriod}");
-    Console.WriteLine($"    Renewal Period                        : {template.RenewalPeriod}");
-    Console.WriteLine($"    msPKI-Certificate-Name-Flag          : {template.CertificateNameFlag}");
-    Console.WriteLine($"    mspki-enrollment-flag                 : {template.EnrollmentFlag}");
-    Console.WriteLine($"    Authorized Signatures Required        : {template.AuthorizedSignatures}");
-    if (template.RaApplicationPolicies != null && template.RaApplicationPolicies.Any())
-    {
-        var applicationPolicyFriendNames = template.RaApplicationPolicies
-            .Select(o => ((new Oid(o)).FriendlyName))
-            .OrderBy(s => s)
-            .ToArray();
-        Console.WriteLine($"    Application Policies                  : {string.Join(", ", applicationPolicyFriendNames)}");
-    }
-    if (template.IssuancePolicies != null && template.IssuancePolicies.Any())
-    {
-        var issuancePolicyFriendNames = template.IssuancePolicies
-            .Select(o => ((new Oid(o)).FriendlyName))
-            .OrderBy(s => s)
-            .ToArray();
-        Console.WriteLine($"    Issuance Policies                     : {string.Join(", ", issuancePolicyFriendNames)}");
-    }
+    //Console.WriteLine($"    CA Name                               : {ca.FullName}");
+    //Console.WriteLine($"    Template Name                         : {template.Name}");
+    //Console.WriteLine($"    Schema Version                        : {template.SchemaVersion}");
+    //Console.WriteLine($"    Validity Period                       : {template.ValidityPeriod}");
+    //Console.WriteLine($"    Renewal Period                        : {template.RenewalPeriod}");
+    //Console.WriteLine($"    msPKI-Certificate-Name-Flag          : {template.CertificateNameFlag}");
+    //Console.WriteLine($"    mspki-enrollment-flag                 : {template.EnrollmentFlag}");
+    //Console.WriteLine($"    Authorized Signatures Required        : {template.AuthorizedSignatures}");
 
-    var oidFriendlyNames = template.ExtendedKeyUsage == null
-        ? new[] { "<null>" }
-        : template.ExtendedKeyUsage.Select(o => ((new Oid(o)).FriendlyName))
-        .OrderBy(s => s)
-        .ToArray();
-    Console.WriteLine($"    pkiextendedkeyusage                   : {string.Join(", ", oidFriendlyNames)}");
 
+    // ESC 1 Checks
     var certificateApplicationPolicyFriendlyNames = template.ApplicationPolicies == null
-        ? new[] { "<null>" }
-        : template.ApplicationPolicies.Select(o => ((new Oid(o)).FriendlyName))
-        .OrderBy(s => s)
-        .ToArray();
-    Console.WriteLine($"    mspki-certificate-application-policy  : {string.Join(", ", certificateApplicationPolicyFriendlyNames)}");
+      ? new[] { "<null>" }
+      : template.ApplicationPolicies.Select(o => ((new Oid(o)).FriendlyName))
+      .OrderBy(s => s)
+      .ToArray();
+
+    if (template.CertificateNameFlag.ToString() == "ENROLLEE_SUPPLIES_SUBJECT" && template.EnrollmentFlag.ToString() == "NONE" && template.AuthorizedSignatures.ToString() == "0" && certificateApplicationPolicyFriendlyNames.Contains("Client Authentication"))
+    {
+        Console.WriteLine("ESC1 Vulnerability Exists");
+    }
+
+    //if (template.RaApplicationPolicies != null && template.RaApplicationPolicies.Any())
+    //{
+    //    var applicationPolicyFriendNames = template.RaApplicationPolicies
+    //        .Select(o => ((new Oid(o)).FriendlyName))
+    //        .OrderBy(s => s)
+    //        .ToArray();
+    //    Console.WriteLine($"    Application Policies                  : {string.Join(", ", applicationPolicyFriendNames)}");
+    //}
+    //if (template.IssuancePolicies != null && template.IssuancePolicies.Any())
+    //{
+    //    var issuancePolicyFriendNames = template.IssuancePolicies
+    //        .Select(o => ((new Oid(o)).FriendlyName))
+    //        .OrderBy(s => s)
+    //        .ToArray();
+    //    Console.WriteLine($"    Issuance Policies                     : {string.Join(", ", issuancePolicyFriendNames)}");
+    //}
+
+    //var oidFriendlyNames = template.ExtendedKeyUsage == null
+    //    ? new[] { "<null>" }
+    //    : template.ExtendedKeyUsage.Select(o => ((new Oid(o)).FriendlyName))
+    //    .OrderBy(s => s)
+    //    .ToArray();
+    //Console.WriteLine($"    pkiextendedkeyusage                   : {string.Join(", ", oidFriendlyNames)}");
+
+  
+   // Console.WriteLine($"    mspki-certificate-application-policy  : {string.Join(", ", certificateApplicationPolicyFriendlyNames)}");
 
     //Console.WriteLine("    Permissions");
     //if (template.SecurityDescriptor == null)
