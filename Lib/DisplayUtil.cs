@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Principal;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -26,6 +27,22 @@ namespace ad_scanner.Lib
             {
                 return null;
             }
+        }
+
+        public static string GetUserSidString(string sid, int padding = 30)
+        {
+            var user = "<UNKNOWN>";
+
+            try
+            {
+                var sidObj = new SecurityIdentifier(sid);
+                user = sidObj.Translate(typeof(NTAccount)).ToString();
+            }
+            catch
+            {
+            }
+
+            return $"{user}".PadRight(padding) + $"{sid}";
         }
 
         public static bool IsLowPrivSid(string sid)
