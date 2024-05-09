@@ -130,9 +130,58 @@ else
       .OrderBy(s => s)
       .ToArray();
 
+    var sd = template.SecurityDescriptor;
+
+    var ownerSid = sd.GetOwner(typeof(SecurityIdentifier));
+    // var ownerName = $"{GetUserSidString(ownerSid.ToString())}";
+
+    var enrollmentPrincipals = new List<string>();
+
+    var rules = sd.GetAccessRules(true, true, typeof(SecurityIdentifier));
+    foreach (ActiveDirectoryAccessRule rule in rules)
+    {
+        if ($"{rule.AccessControlType}" != "Allow")
+            continue;
+
+        var sid = rule.IdentityReference.ToString();
+        //if (_hideAdmins && IsAdminSid(sid))
+        //    continue;
+
+        if ((rule.ActiveDirectoryRights & ActiveDirectoryRights.ExtendedRight) == ActiveDirectoryRights.ExtendedRight)
+        {
+            // 0e10c968-78fb-11d2-90d4-00c04f79dc55  ->  Certificates-Enrollment right
+            // a05b8cc2-17bc-4802-a710-e7c15ab866a2  ->  Certificates-AutoEnrollment right (not acutally used during enrollment)
+            // 00000000-0000-0000-0000-000000000000  ->  all extended rights
+            switch ($"{rule.ObjectType}")
+            {
+                case "0e10c968-78fb-11d2-90d4-00c04f79dc55":
+                    enrollmentPrincipals.Add(GetUserSidString(sid));
+                    break;
+            }
+        }
+
+        //if (enrollmentPrincipals.Count > 0)
+        //{
+        //    var sbEP = new StringBuilder();
+        //    enrollmentPrincipals
+        //        .OrderBy(p => p)
+        //        .ToList()
+        //        .ForEach(p => { sbEP.Append($"{p}\n                                      "); });
+        //   // Console.WriteLine($"        Enrollment Rights           : {sbEP.ToString().Trim()}");
+        //}
+        //Console.WriteLine();
+    }
+
     if (template.CertificateNameFlag.ToString() == "ENROLLEE_SUPPLIES_SUBJECT" && template.EnrollmentFlag.ToString() == "NONE" && template.AuthorizedSignatures.ToString() == "0" && certificateApplicationPolicyFriendlyNames.Contains("Client Authentication"))
     {
-        Console.WriteLine("ESC1 Vulnerability Exists");
+        foreach (string principal in enrollmentPrincipals)
+        {
+            if (principal.Equals("NT AUTHORITY\\Authenticated UsersS-1-5-11", StringComparison.OrdinalIgnoreCase))
+            {
+                Console.WriteLine("ESC1 Vulnerability Exists");
+            }
+        }
+        
     }
 
     //if (template.RaApplicationPolicies != null && template.RaApplicationPolicies.Any())
@@ -175,47 +224,7 @@ else
     //        PrintAllowPermissions(template.SecurityDescriptor);
     //}
 
-    var sd = template.SecurityDescriptor;
 
-    var ownerSid = sd.GetOwner(typeof(SecurityIdentifier));
-    // var ownerName = $"{GetUserSidString(ownerSid.ToString())}";
-
-    var enrollmentPrincipals = new List<string>();
-
-    var rules = sd.GetAccessRules(true, true, typeof(SecurityIdentifier));
-    foreach (ActiveDirectoryAccessRule rule in rules)
-    {
-        if ($"{rule.AccessControlType}" != "Allow")
-            continue;
-
-        var sid = rule.IdentityReference.ToString();
-        //if (_hideAdmins && IsAdminSid(sid))
-        //    continue;
-
-        if ((rule.ActiveDirectoryRights & ActiveDirectoryRights.ExtendedRight) == ActiveDirectoryRights.ExtendedRight)
-        {
-            // 0e10c968-78fb-11d2-90d4-00c04f79dc55  ->  Certificates-Enrollment right
-            // a05b8cc2-17bc-4802-a710-e7c15ab866a2  ->  Certificates-AutoEnrollment right (not acutally used during enrollment)
-            // 00000000-0000-0000-0000-000000000000  ->  all extended rights
-            switch ($"{rule.ObjectType}")
-            {
-                case "0e10c968-78fb-11d2-90d4-00c04f79dc55":
-                    enrollmentPrincipals.Add(GetUserSidString(sid));
-                    break;
-            }
-        }
-
-        if (enrollmentPrincipals.Count > 0)
-        {
-            var sbEP = new StringBuilder();
-            enrollmentPrincipals
-                .OrderBy(p => p)
-                .ToList()
-                .ForEach(p => { sbEP.Append($"{p}\n                                      "); });
-            Console.WriteLine($"        Enrollment Rights           : {sbEP.ToString().Trim()}");
-        }
-        Console.WriteLine();
-    }
 }
 
     bool IsCertificateTemplateVulnerable(CertificateTemplate template, List<string>? currentUserSids = null)
