@@ -2,6 +2,7 @@
 using ad_scanner.Lib;
 using System.DirectoryServices;
 using System.DirectoryServices.ActiveDirectory;
+using System.Security.Cryptography;
 using System.Security.Principal;
 using static ad_scanner.Domain.CertificateTemplate;
 using static ad_scanner.Lib.DisplayUtil;
@@ -102,12 +103,67 @@ else
             if (!ca.Templates.Contains(template.Name)) // check if this CA has this template enabled
                 continue;
 
-           // PrintCertTemplate(ca, template);
+            PrintCertTemplate(ca, template);
         }
     }
 }
+ void PrintCertTemplate(EnterpriseCertificateAuthority ca, CertificateTemplate template)
+{
+    Console.WriteLine($"    CA Name                               : {ca.FullName}");
+    Console.WriteLine($"    Template Name                         : {template.Name}");
+    Console.WriteLine($"    Schema Version                        : {template.SchemaVersion}");
+    Console.WriteLine($"    Validity Period                       : {template.ValidityPeriod}");
+    Console.WriteLine($"    Renewal Period                        : {template.RenewalPeriod}");
+    Console.WriteLine($"    msPKI-Certificate-Name-Flag          : {template.CertificateNameFlag}");
+    Console.WriteLine($"    mspki-enrollment-flag                 : {template.EnrollmentFlag}");
+    Console.WriteLine($"    Authorized Signatures Required        : {template.AuthorizedSignatures}");
+    if (template.RaApplicationPolicies != null && template.RaApplicationPolicies.Any())
+    {
+        var applicationPolicyFriendNames = template.RaApplicationPolicies
+            .Select(o => ((new Oid(o)).FriendlyName))
+            .OrderBy(s => s)
+            .ToArray();
+        Console.WriteLine($"    Application Policies                  : {string.Join(", ", applicationPolicyFriendNames)}");
+    }
+    if (template.IssuancePolicies != null && template.IssuancePolicies.Any())
+    {
+        var issuancePolicyFriendNames = template.IssuancePolicies
+            .Select(o => ((new Oid(o)).FriendlyName))
+            .OrderBy(s => s)
+            .ToArray();
+        Console.WriteLine($"    Issuance Policies                     : {string.Join(", ", issuancePolicyFriendNames)}");
+    }
 
- bool IsCertificateTemplateVulnerable(CertificateTemplate template, List<string>? currentUserSids = null)
+    var oidFriendlyNames = template.ExtendedKeyUsage == null
+        ? new[] { "<null>" }
+        : template.ExtendedKeyUsage.Select(o => ((new Oid(o)).FriendlyName))
+        .OrderBy(s => s)
+        .ToArray();
+    Console.WriteLine($"    pkiextendedkeyusage                   : {string.Join(", ", oidFriendlyNames)}");
+
+    var certificateApplicationPolicyFriendlyNames = template.ApplicationPolicies == null
+        ? new[] { "<null>" }
+        : template.ApplicationPolicies.Select(o => ((new Oid(o)).FriendlyName))
+        .OrderBy(s => s)
+        .ToArray();
+    Console.WriteLine($"    mspki-certificate-application-policy  : {string.Join(", ", certificateApplicationPolicyFriendlyNames)}");
+
+    //Console.WriteLine("    Permissions");
+    //if (template.SecurityDescriptor == null)
+    //{
+    //    Console.WriteLine("      Security descriptor is null");
+    //}
+    //else
+    //{
+    //    if (_showAllPermissions)
+    //        PrintAllPermissions(template.SecurityDescriptor);
+    //    else
+    //        PrintAllowPermissions(template.SecurityDescriptor);
+    //}
+
+    Console.WriteLine();
+}
+bool IsCertificateTemplateVulnerable(CertificateTemplate template, List<string>? currentUserSids = null)
 {
     if (template.SecurityDescriptor == null)
         throw new NullReferenceException($"Could not get the security descriptor for the template '{template.DistinguishedName}'");
