@@ -8,7 +8,7 @@ using static ad_scanner.Lib.DisplayUtil;
 
 
 string _certificateAuthority = null;
-string _domain = null;
+string _domain = "MARVEL.local";
 string _ldapServer = null;
 
 bool isDomainJoined = IsComputerJoinedToDomain();
@@ -21,15 +21,18 @@ if (args.Length > 0)
 if (isDomainJoined)
 {
     Console.WriteLine("The computer is joined to a domain.");
+    FindTemplates();
 }
 else
 {
     Console.WriteLine("The computer is not joined to a domain.");
 }
 
+
+
  void FindTemplates()
 {
-    var ldap = new LdapOperations(new LdapSearchOptions() { Domain = "Marvel.local", LdapServer = "none" });
+    var ldap = new LdapOperations(new LdapSearchOptions() { Domain = _domain, LdapServer = _ldapServer });
 
     // get all of our current SIDs
     var ident = WindowsIdentity.GetCurrent();
