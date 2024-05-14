@@ -158,6 +158,7 @@ else
         }
     }
 
+    // ESC 1 Checks
     if (template.CertificateNameFlag.ToString() == "ENROLLEE_SUPPLIES_SUBJECT" && template.EnrollmentFlag.ToString() == "NONE" && template.AuthorizedSignatures.ToString() == "0" && certificateApplicationPolicyFriendlyNames.Contains("Client Authentication"))
     {
         foreach (string principal in enrollmentPrincipals)
@@ -168,6 +169,19 @@ else
             }
         }
         
+    }
+
+    // ESC2 Checks
+    if (template.CertificateNameFlag.ToString() == "ENROLLEE_SUPPLIES_SUBJECT" && template.EnrollmentFlag.ToString() == "NONE" && template.AuthorizedSignatures.ToString() == "0" && certificateApplicationPolicyFriendlyNames.Contains("Any Purpose"))
+    {
+        foreach (string principal in enrollmentPrincipals)
+        {
+            if (principal.Equals("NT AUTHORITY\\Authenticated UsersS-1-5-11", StringComparison.OrdinalIgnoreCase))
+            {
+                Console.WriteLine("ESC2 Vulnerability Exists");
+            }
+        }
+
     }
 
 
