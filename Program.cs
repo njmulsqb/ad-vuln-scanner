@@ -133,7 +133,7 @@ else
     var sd = template.SecurityDescriptor;
 
     var ownerSid = sd.GetOwner(typeof(SecurityIdentifier));
-    // var ownerName = $"{GetUserSidString(ownerSid.ToString())}";
+ 
 
     var enrollmentPrincipals = new List<string>();
 
@@ -144,14 +144,11 @@ else
             continue;
 
         var sid = rule.IdentityReference.ToString();
-        //if (_hideAdmins && IsAdminSid(sid))
-        //    continue;
+   
 
         if ((rule.ActiveDirectoryRights & ActiveDirectoryRights.ExtendedRight) == ActiveDirectoryRights.ExtendedRight)
         {
-            // 0e10c968-78fb-11d2-90d4-00c04f79dc55  ->  Certificates-Enrollment right
-            // a05b8cc2-17bc-4802-a710-e7c15ab866a2  ->  Certificates-AutoEnrollment right (not acutally used during enrollment)
-            // 00000000-0000-0000-0000-000000000000  ->  all extended rights
+     
             switch ($"{rule.ObjectType}")
             {
                 case "0e10c968-78fb-11d2-90d4-00c04f79dc55":
@@ -159,17 +156,6 @@ else
                     break;
             }
         }
-
-        //if (enrollmentPrincipals.Count > 0)
-        //{
-        //    var sbEP = new StringBuilder();
-        //    enrollmentPrincipals
-        //        .OrderBy(p => p)
-        //        .ToList()
-        //        .ForEach(p => { sbEP.Append($"{p}\n                                      "); });
-        //   // Console.WriteLine($"        Enrollment Rights           : {sbEP.ToString().Trim()}");
-        //}
-        //Console.WriteLine();
     }
 
     if (template.CertificateNameFlag.ToString() == "ENROLLEE_SUPPLIES_SUBJECT" && template.EnrollmentFlag.ToString() == "NONE" && template.AuthorizedSignatures.ToString() == "0" && certificateApplicationPolicyFriendlyNames.Contains("Client Authentication"))
@@ -183,46 +169,6 @@ else
         }
         
     }
-
-    //if (template.RaApplicationPolicies != null && template.RaApplicationPolicies.Any())
-    //{
-    //    var applicationPolicyFriendNames = template.RaApplicationPolicies
-    //        .Select(o => ((new Oid(o)).FriendlyName))
-    //        .OrderBy(s => s)
-    //        .ToArray();
-    //    Console.WriteLine($"    Application Policies                  : {string.Join(", ", applicationPolicyFriendNames)}");
-    //}
-    //if (template.IssuancePolicies != null && template.IssuancePolicies.Any())
-    //{
-    //    var issuancePolicyFriendNames = template.IssuancePolicies
-    //        .Select(o => ((new Oid(o)).FriendlyName))
-    //        .OrderBy(s => s)
-    //        .ToArray();
-    //    Console.WriteLine($"    Issuance Policies                     : {string.Join(", ", issuancePolicyFriendNames)}");
-    //}
-
-    //var oidFriendlyNames = template.ExtendedKeyUsage == null
-    //    ? new[] { "<null>" }
-    //    : template.ExtendedKeyUsage.Select(o => ((new Oid(o)).FriendlyName))
-    //    .OrderBy(s => s)
-    //    .ToArray();
-    //Console.WriteLine($"    pkiextendedkeyusage                   : {string.Join(", ", oidFriendlyNames)}");
-
-
-    // Console.WriteLine($"    mspki-certificate-application-policy  : {string.Join(", ", certificateApplicationPolicyFriendlyNames)}");
-
-    //Console.WriteLine("    Permissions");
-    //if (template.SecurityDescriptor == null)
-    //{
-    //    Console.WriteLine("      Security descriptor is null");
-    //}
-    //else
-    //{
-    //    if (_showAllPermissions)
-    //        PrintAllPermissions(template.SecurityDescriptor);
-    //    else
-    //        PrintAllowPermissions(template.SecurityDescriptor);
-    //}
 
 
 }
