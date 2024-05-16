@@ -123,7 +123,6 @@ else
     //Console.WriteLine($"    Authorized Signatures Required        : {template.AuthorizedSignatures}");
 
 
-    // ESC 1 Checks
     var certificateApplicationPolicyFriendlyNames = template.ApplicationPolicies == null
       ? new[] { "<null>" }
       : template.ApplicationPolicies.Select(o => ((new Oid(o)).FriendlyName))
@@ -183,6 +182,21 @@ else
         }
 
     }
+
+
+    // ESC3 Checks
+    if (template.CertificateNameFlag.ToString() == "ENROLLEE_SUPPLIES_SUBJECT" && template.EnrollmentFlag.ToString() == "NONE" && template.AuthorizedSignatures.ToString() == "0" && certificateApplicationPolicyFriendlyNames.Contains("Certificate Request Agent"))
+    {
+        foreach (string principal in enrollmentPrincipals)
+        {
+            if (principal.Equals("NT AUTHORITY\\Authenticated UsersS-1-5-11", StringComparison.OrdinalIgnoreCase))
+            {
+                Console.WriteLine("ESC3 Vulnerability Exists");
+            }
+        }
+
+    }
+
 
 
 }
