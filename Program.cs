@@ -135,6 +135,11 @@ else
  
 
     var enrollmentPrincipals = new List<string>();
+    var allExtendedRightsPrincipals = new List<string>();
+    var fullControlPrincipals = new List<string>();
+    var writeOwnerPrincipals = new List<string>();
+    var writeDaclPrincipals = new List<string>();
+    var writePropertyPrincipals = new List<string>();
 
     var rules = sd.GetAccessRules(true, true, typeof(SecurityIdentifier));
     foreach (ActiveDirectoryAccessRule rule in rules)
@@ -153,8 +158,28 @@ else
                 case "0e10c968-78fb-11d2-90d4-00c04f79dc55":
                     enrollmentPrincipals.Add(GetUserSidString(sid));
                     break;
+                case "00000000-0000-0000-0000-000000000000":
+                    allExtendedRightsPrincipals.Add(GetUserSidString(sid));
+                    break;
             }
         }
+        if ((rule.ActiveDirectoryRights & ActiveDirectoryRights.GenericAll) == ActiveDirectoryRights.GenericAll)
+        {
+            fullControlPrincipals.Add(GetUserSidString(sid));
+        }
+        if ((rule.ActiveDirectoryRights & ActiveDirectoryRights.WriteOwner) == ActiveDirectoryRights.WriteOwner)
+        {
+            writeOwnerPrincipals.Add(GetUserSidString(sid));
+        }
+        if ((rule.ActiveDirectoryRights & ActiveDirectoryRights.WriteDacl) == ActiveDirectoryRights.WriteDacl)
+        {
+            writeDaclPrincipals.Add(GetUserSidString(sid));
+        }
+        if ((rule.ActiveDirectoryRights & ActiveDirectoryRights.WriteProperty) == ActiveDirectoryRights.WriteProperty && $"{rule.ObjectType}" == "00000000-0000-0000-0000-000000000000")
+        {
+            writePropertyPrincipals.Add(GetUserSidString(sid));
+        }
+
     }
 
     // ESC 1 Checks
@@ -181,6 +206,10 @@ else
             }
         }
 
+       
+
+        
+
     }
 
 
@@ -197,6 +226,55 @@ else
 
     }
 
+    // ESC4 Checks
+    if (template.CertificateNameFlag.ToString() == "ENROLLEE_SUPPLIES_SUBJECT" && template.EnrollmentFlag.ToString() == "NONE" && template.AuthorizedSignatures.ToString() == "0")
+    {
+        foreach (string principal in enrollmentPrincipals)
+        {
+            // Checking Enrollment Permissions.
+            if (principal.Equals("NT AUTHORITY\\Authenticated UsersS-1-5-11", StringComparison.OrdinalIgnoreCase)) // TODO: Check for domain admins as well.
+            {
+                foreach (string extendedRight in allExtendedRightsPrincipals)
+                {
+                    if (extendedRight.Equals("NT AUTHORITY\\Authenticated UsersS-1-5-11", StringComparison.OrdinalIgnoreCase))
+                    {
+                        foreach (string fullControlPrinciple in fullControlPrincipals)
+                        {
+                            if (fullControlPrinciple.Equals("NT AUTHORITY\\Authenticated UsersS-1-5-11", StringComparison.OrdinalIgnoreCase) && isESC4Vulnerable)
+                            {
+                                foreach (string writeOwnerPrincipal in writeOwnerPrincipals)
+                                {
+                                    if (writeOwnerPrincipal.Equals("NT AUTHORITY\\Authenticated UsersS-1-5-11", StringComparison.OrdinalIgnoreCase) && isESC4Vulnerable)
+                                    {
+                                        foreach (string writeDaclPrincipal in writeDaclPrincipals)
+                                        {
+                                            if (writeDaclPrincipal.Equals("NT AUTHORITY\\Authenticated UsersS-1-5-11", StringComparison.OrdinalIgnoreCase) && isESC4Vulnerable)
+                                            {
+                                                foreach (string writePropertyPrincipal in writePropertyPrincipals)
+                                                {
+                                                    if (writePropertyPrincipal.Equals("NT AUTHORITY\\Authenticated UsersS-1-5-11", StringComparison.OrdinalIgnoreCase) && isESC4Vulnerable)
+                                                    {
+                                                        Console.WriteLine("ESC4 Vulnerability Exists");
+                                                    }
+
+                                                }
+                                            }
+
+                                        }
+                                    }
+
+                                }
+                            }
+
+                        }
+                    }
+
+                }
+
+            }
+        }
+
+    }
 
 
 }
