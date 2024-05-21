@@ -232,27 +232,27 @@ else
         foreach (string principal in enrollmentPrincipals)
         {
             // Checking Enrollment Permissions.
-            if (principal.Equals("NT AUTHORITY\\Authenticated UsersS-1-5-11", StringComparison.OrdinalIgnoreCase)) // TODO: Check for domain admins as well.
-            {
+            //if (principal.Equals("NT AUTHORITY\\Authenticated UsersS-1-5-11", StringComparison.OrdinalIgnoreCase)) // TODO: Check for domain admins as well.
+            //{
                 foreach (string extendedRight in allExtendedRightsPrincipals)
                 {
                     if (extendedRight.Equals("NT AUTHORITY\\Authenticated UsersS-1-5-11", StringComparison.OrdinalIgnoreCase))
                     {
                         foreach (string fullControlPrinciple in fullControlPrincipals)
                         {
-                            if (fullControlPrinciple.Equals("NT AUTHORITY\\Authenticated UsersS-1-5-11", StringComparison.OrdinalIgnoreCase) && isESC4Vulnerable)
+                            if (fullControlPrinciple.Equals("NT AUTHORITY\\Authenticated UsersS-1-5-11", StringComparison.OrdinalIgnoreCase))
                             {
                                 foreach (string writeOwnerPrincipal in writeOwnerPrincipals)
                                 {
-                                    if (writeOwnerPrincipal.Equals("NT AUTHORITY\\Authenticated UsersS-1-5-11", StringComparison.OrdinalIgnoreCase) && isESC4Vulnerable)
+                                    if (writeOwnerPrincipal.Equals("NT AUTHORITY\\Authenticated UsersS-1-5-11", StringComparison.OrdinalIgnoreCase) )
                                     {
                                         foreach (string writeDaclPrincipal in writeDaclPrincipals)
                                         {
-                                            if (writeDaclPrincipal.Equals("NT AUTHORITY\\Authenticated UsersS-1-5-11", StringComparison.OrdinalIgnoreCase) && isESC4Vulnerable)
+                                            if (writeDaclPrincipal.Equals("NT AUTHORITY\\Authenticated UsersS-1-5-11", StringComparison.OrdinalIgnoreCase) )
                                             {
                                                 foreach (string writePropertyPrincipal in writePropertyPrincipals)
                                                 {
-                                                    if (writePropertyPrincipal.Equals("NT AUTHORITY\\Authenticated UsersS-1-5-11", StringComparison.OrdinalIgnoreCase) && isESC4Vulnerable)
+                                                    if (writePropertyPrincipal.Equals("NT AUTHORITY\\Authenticated UsersS-1-5-11", StringComparison.OrdinalIgnoreCase) )
                                                     {
                                                         Console.WriteLine("ESC4 Vulnerability Exists");
                                                     }
@@ -271,7 +271,7 @@ else
 
                 }
 
-            }
+           // }
         }
 
     }
