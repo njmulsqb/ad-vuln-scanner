@@ -52,6 +52,7 @@ namespace ad_scanner.Lib
                 || sid == "S-1-5-11"; // Authenticated Users
         }
 
+
     }
 
 }

@@ -276,7 +276,11 @@ else
 
     }
 
-
+    // ESC6 Checks
+    if (ca.IsUserSpecifiesSanEnabled())
+    {
+        Console.WriteLine("ESC6 Vulnerable");
+    }
 }
 
     bool IsCertificateTemplateVulnerable(CertificateTemplate template, List<string>? currentUserSids = null)
