@@ -277,9 +277,9 @@ else
     }
 
     // ESC6 Checks
-    if (ca.IsUserSpecifiesSanEnabled())
+    if (ca.IsUserSpecifiesSanEnabled() && certificateApplicationPolicyFriendlyNames.Contains("Client Authentication"))
     {
-        Console.WriteLine("ESC6 Vulnerable");
+        Console.WriteLine("ESC6 Vulnerability Exists");
     }
 }
 
