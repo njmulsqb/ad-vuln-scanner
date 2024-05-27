@@ -15,11 +15,6 @@ string _ldapServer = null;
 
 bool isDomainJoined = IsComputerJoinedToDomain();
 
-//if (args.Length > 0)
-//{
-//    Console.WriteLine(args[0]);
-//}
-
 if (isDomainJoined)
 {
     Console.WriteLine("The computer is joined to a domain.");
@@ -299,6 +294,12 @@ else
         Console.WriteLine("ESC6 Vulnerability Exists");
     }
 
+    //ESC8 Checks
+    var webServices = ca.GetWebServices();
+    if (webServices.LegacyAspEnrollmentUrls.Any())
+    {
+        Console.WriteLine("ESC8 Vulnerability Exists");
+    }
   
 }
 
@@ -464,3 +465,5 @@ else
             return false;
         }
     }
+
+

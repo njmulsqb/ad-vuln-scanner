@@ -118,35 +118,35 @@ namespace ad_scanner.Domain
             return (editFlags & 0x00040000) == 0x00040000;
         }
 
-        //public CertificateAuthorityWebServices GetWebServices()
-        //{
-        //    if (DnsHostname == null) throw new NullReferenceException("DnsHostname is null");
+        public CertificateAuthorityWebServices GetWebServices()
+        {
+            if (DnsHostname == null) throw new NullReferenceException("DnsHostname is null");
 
-        //    var webservices = new CertificateAuthorityWebServices();
+            var webservices = new CertificateAuthorityWebServices();
 
-        //    var protocols = new List<string>() { "http://", "https://" };
+            var protocols = new List<string>() { "http://", "https://" };
 
-        //    protocols.ForEach(p =>
-        //    {
-        //        var LegacyAspEnrollmentUrl = $"{p}{DnsHostname}/certsrv/";
-        //        var enrollmentWebServiceUrl = $"{p}{DnsHostname}/{Name}_CES_Kerberos/service.svc";
-        //        var enrollmentPolicyWebServiceUrl = $"{p}{DnsHostname}/ADPolicyProvider_CEP_Kerberos/service.svc";
-        //        var ndesEnrollmentUrl = $"{p}{DnsHostname}/certsrv/mscep/";
+            protocols.ForEach(p =>
+            {
+                var LegacyAspEnrollmentUrl = $"{p}{DnsHostname}/certsrv/";
+                var enrollmentWebServiceUrl = $"{p}{DnsHostname}/{Name}_CES_Kerberos/service.svc";
+                var enrollmentPolicyWebServiceUrl = $"{p}{DnsHostname}/ADPolicyProvider_CEP_Kerberos/service.svc";
+                var ndesEnrollmentUrl = $"{p}{DnsHostname}/certsrv/mscep/";
 
-        //        if (HttpUtil.UrlExists(LegacyAspEnrollmentUrl, "NTLM"))
-        //            webservices.LegacyAspEnrollmentUrls.Add(LegacyAspEnrollmentUrl);
+                if (Lib.HttpUtil.UrlExists(LegacyAspEnrollmentUrl, "NTLM"))
+                    webservices.LegacyAspEnrollmentUrls.Add(LegacyAspEnrollmentUrl);
 
-        //        if (HttpUtil.UrlExists(enrollmentWebServiceUrl))
-        //            webservices.EnrollmentWebServiceUrls.Add(enrollmentWebServiceUrl);
+                if (Lib.HttpUtil.UrlExists(enrollmentWebServiceUrl))
+                    webservices.EnrollmentWebServiceUrls.Add(enrollmentWebServiceUrl);
 
-        //        if (HttpUtil.UrlExists(enrollmentPolicyWebServiceUrl))
-        //            webservices.EnrollmentPolicyWebServiceUrls.Add(enrollmentPolicyWebServiceUrl);
+                if (Lib.HttpUtil.UrlExists(enrollmentPolicyWebServiceUrl))
+                    webservices.EnrollmentPolicyWebServiceUrls.Add(enrollmentPolicyWebServiceUrl);
 
-        //        if (HttpUtil.UrlExists(ndesEnrollmentUrl))
-        //            webservices.NetworkDeviceEnrollmentServiceUrls.Add(ndesEnrollmentUrl);
-        //    });
+                if (Lib.HttpUtil.UrlExists(ndesEnrollmentUrl))
+                    webservices.NetworkDeviceEnrollmentServiceUrls.Add(ndesEnrollmentUrl);
+            });
 
-        //    return webservices;
-        //}
+            return webservices;
+        }
     }
 }
