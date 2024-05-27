@@ -148,7 +148,24 @@ else
             continue;
 
         var sid = rule.IdentityReference.ToString();
-   
+
+        //ESC7 Checks
+        var rights = (CertificationAuthorityRights)rule.ActiveDirectoryRights;
+        var ident = WindowsIdentity.GetCurrent();
+        var currentUserSids = ident.Groups.Select(o => o.ToString()).ToList();
+
+        if (currentUserSids == null)
+        {
+            if (IsLowPrivSid(sid))
+            {
+                if (((rights & CertificationAuthorityRights.ManageCA) == CertificationAuthorityRights.ManageCA) || ((rights & CertificationAuthorityRights.ManageCertificates) == CertificationAuthorityRights.ManageCertificates))
+                {
+                    Console.WriteLine("ESC7 Vulnerability Exists");
+                }
+
+            }
+        }
+
 
         if ((rule.ActiveDirectoryRights & ActiveDirectoryRights.ExtendedRight) == ActiveDirectoryRights.ExtendedRight)
         {
@@ -281,6 +298,8 @@ else
     {
         Console.WriteLine("ESC6 Vulnerability Exists");
     }
+
+  
 }
 
     bool IsCertificateTemplateVulnerable(CertificateTemplate template, List<string>? currentUserSids = null)
